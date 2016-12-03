@@ -34,6 +34,7 @@ def read_packet(sock, handle):
 class avion:
   def __init__(self, mac, password):
     self.mac = mac
+    password = password.encode("ascii") + bytearray([0x00, 0x4d, 0x43, 0x50])
     self.password = csrmesh.network_key(password)
   def connect(self):
     self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)
