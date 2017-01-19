@@ -54,9 +54,9 @@ class avion:
       try:
         self.device.writeCharacteristic(self.lowhandle, csrpacket[0:20], withResponse=True)
         self.device.writeCharacteristic(self.highhandle, csrpacket[20:], withResponse=True)
+        return True
       except Exception as e:
         try:
           self.connect()
         except:
           pass
-    return True
