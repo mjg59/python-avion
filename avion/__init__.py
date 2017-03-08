@@ -35,7 +35,7 @@ class avion:
   def __init__(self, mac, password):
     self.mac = mac
     password = password.encode("ascii") + bytearray([0x00, 0x4d, 0x43, 0x50])
-    self.password = csrmesh.network_key(password)
+    self.password = csrmesh.crypto.generate_key(password)
   def connect(self):
     self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)
     characteristics = self.device.getCharacteristics()
@@ -46,7 +46,7 @@ class avion:
         self.highhandle = characteristic.getHandle()
   def set_brightness(self, brightness):
     packet = bytearray([0x80, 0x80, 0x73, 0x00, 0x0a, 0x00, 0x00, 0x00, brightness, 0x00, 0x00, 0x00, 0x00])
-    csrpacket = csrmesh.make_packet(self.password, csrmesh.random_seq(), packet)
+    csrpacket = csrmesh.crypto.make_packet(self.password, csrmesh.crypto.random_seq(), packet)
     initial = time.time()
     while True:
       if time.time() - initial >= 10:
