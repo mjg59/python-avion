@@ -6,6 +6,7 @@
 # LICENSE file for more details.
 
 import csrmesh
+import requests
 import socket
 import time
 
@@ -30,6 +31,11 @@ def read_packet(sock, handle):
   for d in data:
     response.append(ord(d))
   return response
+
+def avion_info(username, password):  
+  r = requests.post("https://admin.avi-on.com/api/sessions",
+                    json={'email': username, 'password': password})
+  return r.json()
 
 class avion:
   def __init__(self, mac, password):
