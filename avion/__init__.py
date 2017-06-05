@@ -8,7 +8,6 @@
 import csrmesh
 import requests
 import socket
-import time
 
 from bluepy import btle
 
@@ -37,32 +36,32 @@ def avion_info(username, password):
                     json={'email': username, 'password': password})
   return r.json()
 
+class avionException(Exception):
+  pass
+
 class avion:
   def __init__(self, mac, password):
     self.mac = mac
     password = password.encode("ascii") + bytearray([0x00, 0x4d, 0x43, 0x50])
     self.password = csrmesh.crypto.generate_key(password)
+
   def connect(self):
-    self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)
-    characteristics = self.device.getCharacteristics()
-    for characteristic in characteristics:
-      if characteristic.uuid == "c4edc000-9daf-11e3-8003-00025b000b00":
-        self.lowhandle = characteristic.getHandle()
-      elif characteristic.uuid == "c4edc000-9daf-11e3-8004-00025b000b00":
-        self.highhandle = characteristic.getHandle()
+    try:
+      self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)
+      characteristics = self.device.getCharacteristics()
+      for characteristic in characteristics:
+        if characteristic.uuid == "c4edc000-9daf-11e3-8003-00025b000b00":
+          self.lowhandle = characteristic.getHandle()
+        elif characteristic.uuid == "c4edc000-9daf-11e3-8004-00025b000b00":
+          self.highhandle = characteristic.getHandle()
+    except btle.BTLEException:
+      raise avionException("Unable to connect")
+
   def set_brightness(self, brightness):
     packet = bytearray([0x80, 0x80, 0x73, 0x00, 0x0a, 0x00, 0x00, 0x00, brightness, 0x00, 0x00, 0x00, 0x00])
     csrpacket = csrmesh.crypto.make_packet(self.password, csrmesh.crypto.random_seq(), packet)
-    initial = time.time()
-    while True:
-      if time.time() - initial >= 10:
-        return False
-      try:
-        self.device.writeCharacteristic(self.lowhandle, csrpacket[0:20], withResponse=True)
-        self.device.writeCharacteristic(self.highhandle, csrpacket[20:], withResponse=True)
-        return True
-      except Exception as e:
-        try:
-          self.connect()
-        except:
-          pass
+    try:
+      self.device.writeCharacteristic(self.lowhandle, csrpacket[0:20], withResponse=True)
+      self.device.writeCharacteristic(self.highhandle, csrpacket[20:], withResponse=True)
+    except Exception as e:
+      raise avionException("Unable to send brightness command")
