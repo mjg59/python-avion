@@ -8,11 +8,11 @@ import warnings
 
 dynamic_requires = []
 
-version = 0.7
+version = 0.8
 
 setup(
     name='avion',
-    version=0.7,
+    version=0.8,
     author='Matthew Garrett',
     author_email='mjg59@srcf.ucam.org',
     url='http://github.com/mjg59/python-avion',
