@@ -28,7 +28,8 @@ setup(
     ],
     install_requires=[
         'bluepy==1.0.5',
-        'csrmesh==0.8.0',
+        'csrmesh==0.9.0',
+        'requests==2.18.4',
     ],
     include_package_data=True,
     zip_safe=False,
