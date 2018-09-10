@@ -31,10 +31,37 @@ def read_packet(sock, handle):
     response.append(ord(d))
   return response
 
-def avion_info(username, password):  
-  r = requests.post("https://admin.avi-on.com/api/sessions",
-                    json={'email': username, 'password': password})
-  return r.json()
+def avion_info(username, password):
+  """Enumerate devices using the Avi-On API."""
+  def _authenticate(username, password):
+    """Authenticate with the API and get a token."""
+    r = requests.post("https://api.avi-on.com/sessions",
+                      json={'email': username, 'password': password})
+    try:
+      return r.json()['credentials']['auth_token']
+    except KeyError:
+      raise(avionException('API authentication failed'))
+
+  def _get_locations(auth_token):
+    """Get a list of locations from the API."""
+    r = requests.get("https://api.avi-on.com/user",
+                     headers={'Authorization': 'Token {}'.format(auth_token)})
+    return r.json()['user']['locations']
+
+  def _get_devices(auth_token, location_id):
+    """Get a list of devices for a particular location."""
+    r = requests.get("https://api.avi-on.com/locations/{}/abstract_devices"
+                       .format(location_id),
+                     headers={'Authorization': 'Token {}'.format(auth_token)})
+    return r.json()['abstract_devices']
+
+  auth_token = _authenticate(username, password)
+  locations = _get_locations(auth_token)
+  for idx, location in enumerate(locations):
+    devices = _get_devices(auth_token, location['id'])
+    locations[idx]['devices'] = [{'device': d} for d in devices]
+  return {'locations': [{'location': l} for l in locations]}
+
 
 class avionException(Exception):
   pass
