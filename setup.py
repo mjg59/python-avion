@@ -27,7 +27,7 @@ setup(
         'Programming Language :: Python',
     ],
     install_requires=[
-        'bluepy==1.0.5',
+        'bluepy==1.1.4',
         'csrmesh==0.9.0',
         'requests==2.18.4',
     ],
