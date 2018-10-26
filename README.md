@@ -1,5 +1,4 @@
-Python control for Avion bluetooth dimmers and switches
-==========================================
+# Python control for Avi-on bluetooth dimmers and switches
 
 A simple Python API for controlling [Avi-on](http://www.avi-on.com/) Bluetooth dimmers and switches. This code makes use of the PyBT2 branch of Mike Ryan's [PyBT](http://github.com/mikeryan/PyBT) and depends on [csrmesh](https://github.com/nkaminski/csrmesh/).
 

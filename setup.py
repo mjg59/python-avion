@@ -1,18 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
 from setuptools import setup, find_packages
-import sys
-import warnings
 
 dynamic_requires = []
 
-version = 0.9
-
 setup(
     name='antsar-avion',
-    version=0.9,
+    version='0.9.1',
     author='Matthew Garrett',
     author_email='mjg59@srcf.ucam.org',
     url='http://github.com/mjg59/python-avion',
