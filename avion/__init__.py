@@ -2,6 +2,7 @@
 Python module for control of Avion bluetooth dimmers
 
 Copyright 2016 Matthew Garrett <mjg59@srcf.ucam.org>
+Copyright 2018 Anton Sarukhanov <code@ant.sr>
 
 This code is released under the terms of the GPLv3 license. See the
 LICENSE file for more details.
