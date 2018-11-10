@@ -1,14 +1,17 @@
+"""
+Python module for control of Avion bluetooth dimmers
 
-# Python module for control of Avion bluetooth dimmers
-#
-# Copyright 2016 Matthew Garrett <mjg59@srcf.ucam.org>
-#
-# This code is released under the terms of the GPLv3 license. See the
-# LICENSE file for more details.
+Copyright 2016 Matthew Garrett <mjg59@srcf.ucam.org>
+
+This code is released under the terms of the GPLv3 license. See the
+LICENSE file for more details.
+"""
 
 import csrmesh
 import requests
 from bluepy import btle
+
+API_TIMEOUT = 5
 
 
 def get_devices(username: str, password: str, connect: bool = False):
@@ -21,7 +24,7 @@ def get_devices(username: str, password: str, connect: bool = False):
     def _authenticate(username, password):
         """Authenticate with the API and get a token."""
         auth_data = {'email': username, 'password': password}
-        r = requests.post(API_AUTH, json=auth_data)
+        r = requests.post(API_AUTH, json=auth_data, timeout=API_TIMEOUT)
         try:
             return r.json()['credentials']['auth_token']
         except KeyError:
@@ -30,14 +33,14 @@ def get_devices(username: str, password: str, connect: bool = False):
     def _get_locations(auth_token):
         """Get a list of locations from the API."""
         headers = {'Authorization': 'Token {}'.format(auth_token)}
-        r = requests.get(API_USER, headers=headers)
+        r = requests.get(API_USER, headers=headers, timeout=API_TIMEOUT)
         return r.json()['user']['locations']
 
     def _get_devices(auth_token, location_id):
         """Get a list of devices for a particular location."""
         headers = {'Authorization': 'Token {}'.format(auth_token)}
         r = requests.get(API_DEVICES.format(location=location_id),
-                         headers=headers)
+                         headers=headers, timeout=API_TIMEOUT)
         return r.json()['abstract_devices']
 
     auth_token = _authenticate(username, password)

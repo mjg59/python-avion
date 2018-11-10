@@ -1,18 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
 from setuptools import setup, find_packages
-import sys
-import warnings
 
 dynamic_requires = []
 
-version = 0.8
-
 setup(
-    name='avion',
-    version=0.8,
+    name='antsar-avion',
+    version='0.9.1',
     author='Matthew Garrett',
     author_email='mjg59@srcf.ucam.org',
     url='http://github.com/mjg59/python-avion',
@@ -27,9 +22,9 @@ setup(
         'Programming Language :: Python',
     ],
     install_requires=[
-        'bluepy==1.1.4',
-        'csrmesh==0.9.0',
-        'requests==2.18.4',
+        'bluepy>==1.1.4',
+        'csrmesh>=0.9.0',
+        'requests>=2.18.4',
     ],
     include_package_data=True,
     zip_safe=False,
