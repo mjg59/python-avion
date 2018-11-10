@@ -132,10 +132,9 @@ class Avion:
             object_bytes = bytearray([0x7f + self.object_id, 0x80])
         else:
             object_bytes = self.DEFAULT_OBJECT
-        packet = (object_bytes +
-                  self.BRIGHTNESS_PREFIX +
-                  bytearray([brightness]) +
-                  self.BRIGHTNESS_SUFFIX)
+        packet = b"%s%s%s%s" % (object_bytes, self.BRIGHTNESS_PREFIX,
+                                bytearray([brightness]),
+                                self.BRIGHTNESS_SUFFIX)
         csrpacket = csrmesh.crypto.make_packet(
             self.key, csrmesh.crypto.random_seq(), packet)
         try:
