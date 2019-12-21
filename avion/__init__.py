@@ -19,7 +19,7 @@ def get_devices(username: str, password: str, connect: bool = False):
     """Enumerate devices using the Avi-on API."""
     API_URL = "https://api.avi-on.com/{api}"
     API_AUTH = API_URL.format(api='sessions')
-    API_USER = API_URL.format(api='user')
+    API_LOCATION = API_URL.format(api='locations')
     API_DEVICES = API_URL.format(api='locations/{location}/abstract_devices')
 
     def _authenticate(username, password):
@@ -34,8 +34,8 @@ def get_devices(username: str, password: str, connect: bool = False):
     def _get_locations(auth_token):
         """Get a list of locations from the API."""
         headers = {'Authorization': 'Token {}'.format(auth_token)}
-        r = requests.get(API_USER, headers=headers, timeout=API_TIMEOUT)
-        return r.json()['user']['locations']
+        r = requests.get(API_LOCATION, headers=headers, timeout=API_TIMEOUT)
+        return r.json()['locations']
 
     def _get_devices(auth_token, location_id):
         """Get a list of devices for a particular location."""

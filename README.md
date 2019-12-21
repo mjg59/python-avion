@@ -31,7 +31,7 @@ This is an alternative approach which does not require the Avi-On API.
 Get API key and password:
 
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"email": "fakename@example.com", "password": "password"}' https://admin.avi-on.com/api/sessions | jq
+curl -X POST -H "Content-Type: application/json" -d '{"email": "fakename@example.com", "password": "password"}' https://api.avi-on.com/sessions | jq
 ```
 
 Replace the email and password fields with your Avion credentials. The "passphrase" field is the API key.
